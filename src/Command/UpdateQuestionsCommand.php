@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Consumer\File\QuestionDto;
 use App\Consumer\File\QuestionsWrapperDto;
 use App\Entity\Answer;
 use App\Entity\Question;
@@ -36,24 +37,10 @@ class UpdateQuestionsCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         if (file_exists(self::QUESTIONS_PATH)) {
-            $questionsWrapper = $this->serializer->deserialize(
-                file_get_contents(self::QUESTIONS_PATH),
-                QuestionsWrapperDto::class,
-                'json'
-            );
-            assert($questionsWrapper instanceof QuestionsWrapperDto);
-            foreach ($questionsWrapper->getQuestions() as $question) {
+            foreach ($this->getQuestionsFromFile() as $question) {
                 $dbQuestion = $this->questionRepository->findOneBy(['question' => $question->getQuestion()]);
                 if (!$dbQuestion) {
-                    $dbQuestion = new Question();
-                    $dbQuestion->setQuestion($question->getQuestion());
-                    array_map(fn($a) => $dbQuestion->addAnswer(new Answer($a)), $question->getAnswers());
-                    $this->em->persist($dbQuestion);
-                    $this->em->flush();
-                    $dbQuestion->setRightAnswer($this->answerRepository->findOneBy([
-                        'answer' => $question->getAnswers()[$question->getRightAnswer()]
-                    ]));
-                    $this->em->flush();
+                    $this->insertNewQuestionToDb($question);
                 }
             }
         } else {
@@ -62,5 +49,30 @@ class UpdateQuestionsCommand extends Command
         }
         $io->success('Questions successfully updated!');
         return Command::SUCCESS;
+    }
+
+    /**
+     * @return QuestionDto[]
+     */
+    protected function getQuestionsFromFile(): array {
+        $questionsWrapper = $this->serializer->deserialize(
+            file_get_contents(self::QUESTIONS_PATH),
+            QuestionsWrapperDto::class,
+            'json'
+        );
+        assert($questionsWrapper instanceof QuestionsWrapperDto);
+        return $questionsWrapper->getQuestions();
+    }
+
+    protected function insertNewQuestionToDb(QuestionDto $question): void {
+        $dbQuestion = new Question();
+        $dbQuestion->setQuestion($question->getQuestion());
+        array_map(fn($a) => $dbQuestion->addAnswer(new Answer($a)), $question->getAnswers());
+        $this->em->persist($dbQuestion);
+        $this->em->flush();
+        $dbQuestion->setRightAnswer($this->answerRepository->findOneBy([
+            'answer' => $question->getAnswers()[$question->getRightAnswer()]
+        ]));
+        $this->em->flush();
     }
 }
