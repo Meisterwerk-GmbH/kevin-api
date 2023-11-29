@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\AnswerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\InheritanceType;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: AnswerRepository::class)]
+#[Entity(repositoryClass: AnswerRepository::class)]
+#[InheritanceType('JOINED')]
 class Answer
 {
     #[ORM\Id]
@@ -18,10 +21,6 @@ class Answer
     #[ORM\Column(length: 255)]
     #[Groups('question')]
     private ?string $answer = null;
-
-    #[ORM\ManyToOne(inversedBy: 'answers')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Question $question = null;
 
     public function __construct(string $answer)
     {
@@ -41,18 +40,6 @@ class Answer
     public function setAnswer(string $answer): static
     {
         $this->answer = $answer;
-
-        return $this;
-    }
-
-    public function getQuestion(): ?Question
-    {
-        return $this->question;
-    }
-
-    public function setQuestion(?Question $question): static
-    {
-        $this->question = $question;
 
         return $this;
     }

@@ -25,7 +25,7 @@ class Question
 
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, cascade: ['persist'], orphanRemoval: true)]
     #[Groups('question')]
-    private Collection $answers;
+    private Collection $wrongAnswers;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[Groups('question')]
@@ -33,7 +33,7 @@ class Question
 
     public function __construct()
     {
-        $this->answers = new ArrayCollection();
+        $this->wrongAnswers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -54,26 +54,26 @@ class Question
     }
 
     /**
-     * @return Collection<int, Answer>
+     * @return Collection<int, WrongAnswer>
      */
-    public function getAnswers(): Collection
+    public function getWrongAnswers(): Collection
     {
-        return $this->answers;
+        return $this->wrongAnswers;
     }
 
-    public function addAnswer(Answer $answer): static
+    public function addWrongAnswer(WrongAnswer $answer): static
     {
-        if (!$this->answers->contains($answer)) {
-            $this->answers->add($answer);
+        if (!$this->wrongAnswers->contains($answer)) {
+            $this->wrongAnswers->add($answer);
             $answer->setQuestion($this);
         }
 
         return $this;
     }
 
-    public function removeAnswer(Answer $answer): static
+    public function removeWrongAnswer(WrongAnswer $answer): static
     {
-        if ($this->answers->removeElement($answer)) {
+        if ($this->wrongAnswers->removeElement($answer)) {
             // set the owning side to null (unless already changed)
             if ($answer->getQuestion() === $this) {
                 $answer->setQuestion(null);
@@ -90,7 +90,6 @@ class Question
 
     public function setRightAnswer(Answer $rightAnswer): static
     {
-        $rightAnswer->setQuestion($this);
         $this->rightAnswer = $rightAnswer;
         return $this;
     }

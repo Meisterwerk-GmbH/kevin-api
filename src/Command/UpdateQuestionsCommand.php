@@ -6,6 +6,7 @@ use App\Consumer\File\QuestionDto;
 use App\Consumer\File\QuestionsWrapperDto;
 use App\Entity\Answer;
 use App\Entity\Question;
+use App\Entity\WrongAnswer;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -67,12 +68,9 @@ class UpdateQuestionsCommand extends Command
     protected function insertNewQuestionToDb(QuestionDto $question): void {
         $dbQuestion = new Question();
         $dbQuestion->setQuestion($question->getQuestion());
-        array_map(fn($a) => $dbQuestion->addAnswer(new Answer($a)), $question->getAnswers());
+        $dbQuestion->setRightAnswer(new Answer($question->getRightAnswer()));
+        array_map(fn($a) => $dbQuestion->addWrongAnswer(new WrongAnswer($a)), $question->getWrongAnswers());
         $this->em->persist($dbQuestion);
-        $this->em->flush();
-        $dbQuestion->setRightAnswer($this->answerRepository->findOneBy([
-            'answer' => $question->getAnswers()[$question->getRightAnswer()]
-        ]));
         $this->em->flush();
     }
 }

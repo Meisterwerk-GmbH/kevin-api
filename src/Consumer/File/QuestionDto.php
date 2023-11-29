@@ -5,14 +5,12 @@ namespace App\Consumer\File;
 class QuestionDto
 {
     /**
-     * @param string $question
-     * @param string[] $answers
-     * @param int $rightAnswer
+     * @param string[] $wrongAnswers
      */
     public function __construct(
         protected string $question,
-        protected array $answers,
-        protected int $rightAnswer
+        protected array  $wrongAnswers,
+        protected string $rightAnswer
     ) {}
 
     public function getQuestion(): string
@@ -28,25 +26,25 @@ class QuestionDto
     /**
      * @return string[]
      */
-    public function getAnswers(): array
+    public function getWrongAnswers(): array
     {
-        return $this->answers;
+        return $this->wrongAnswers;
     }
 
     /**
-     * @param string[] $answers
+     * @param string[] $wrongAnswers
      */
-    public function setAnswers(array $answers): void
+    public function setWrongAnswers(array $wrongAnswers): void
     {
-        $this->answers = $answers;
+        $this->wrongAnswers = $wrongAnswers;
     }
 
-    public function getRightAnswer(): int
+    public function getRightAnswer(): string
     {
         return $this->rightAnswer;
     }
 
-    public function setRightAnswer(int $rightAnswer): void
+    public function setRightAnswer(string $rightAnswer): void
     {
         $this->rightAnswer = $rightAnswer;
     }
