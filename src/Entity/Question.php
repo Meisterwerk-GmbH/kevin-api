@@ -3,32 +3,33 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\GetCollection;
+use App\ApiResource\QuestionDto;
 use App\Repository\QuestionRepository;
+use App\State\QuestionProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
-#[GetCollection(normalizationContext: ['groups' => ['question']])]
+#[GetCollection(
+    output: QuestionDto::class,
+    provider: QuestionProvider::class
+)]
 class Question
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('question')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('question')]
     private ?string $question = null;
 
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, cascade: ['persist'], orphanRemoval: true)]
-    #[Groups('question')]
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: WrongAnswer::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $wrongAnswers;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups('question')]
     private ?Answer $rightAnswer = null;
 
     public function __construct()
