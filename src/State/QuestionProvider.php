@@ -40,9 +40,10 @@ class QuestionProvider implements ProviderInterface
 
     protected function mapEntityToDto(Question $question): QuestionDto {
         return new QuestionDto(
+            $question->getId(),
             $question->getQuestion(),
             array_map(
-                fn($q) => new AnswerDto($q->getId(), $q->getAnswer()),
+                fn($q) => new AnswerDto($q->getUuid(), $q->getAnswer()),
                 $this->shuffleAnswers($question)
             )
         );

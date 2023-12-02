@@ -5,6 +5,7 @@ namespace App\ApiResource;
 class QuestionDto
 {
     public function __construct(
+        protected int $id,
         protected string $question,
         protected array $answers
     ) {}
@@ -33,5 +34,10 @@ class QuestionDto
     public function setAnswers(array $answers): void
     {
         $this->answers = $answers;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 }

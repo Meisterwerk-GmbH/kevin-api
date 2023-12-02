@@ -2,22 +2,14 @@
 
 namespace App\ApiResource;
 
+use Ramsey\Uuid\UuidInterface;
+
 class AnswerDto
 {
     public function __construct(
-        protected int $id,
+        protected UuidInterface $uuid,
         protected string $answer
     ) {}
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
 
     public function getAnswer(): string
     {
@@ -27,5 +19,10 @@ class AnswerDto
     public function setAnswer(string $answer): void
     {
         $this->answer = $answer;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 }
