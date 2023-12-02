@@ -1,10 +1,10 @@
 <?php
 
-namespace App\ApiResource;
+namespace App\Dto;
 
 use Ramsey\Uuid\UuidInterface;
 
-class AnswerDto
+class AnswerOutput
 {
     public function __construct(
         protected UuidInterface $uuid,

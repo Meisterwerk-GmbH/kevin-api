@@ -1,8 +1,8 @@
 <?php
 
-namespace App\ApiResource;
+namespace App\Dto;
 
-class QuestionDto
+class QuestionOutput
 {
     public function __construct(
         protected int $id,
@@ -21,7 +21,7 @@ class QuestionDto
     }
 
     /**
-     * @return AnswerDto[]
+     * @return AnswerOutput[]
      */
     public function getAnswers(): array
     {
@@ -29,7 +29,7 @@ class QuestionDto
     }
 
     /**
-     * @param AnswerDto[] $answers
+     * @param AnswerOutput[] $answers
      */
     public function setAnswers(array $answers): void
     {

@@ -2,15 +2,15 @@
 
 namespace App\State;
 
+use ApiPlatform\Doctrine\Orm\Paginator;
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Doctrine\Orm\State\ItemProvider;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\Pagination\Pagination;
 use ApiPlatform\State\Pagination\TraversablePaginator;
 use ApiPlatform\State\ProviderInterface;
-use ApiPlatform\Doctrine\Orm\Paginator;
-use App\ApiResource\AnswerDto;
-use App\ApiResource\QuestionDto;
+use App\Dto\AnswerOutput;
+use App\Dto\QuestionOutput;
 use App\Entity\Answer;
 use App\Entity\Question;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -38,12 +38,12 @@ class QuestionProvider implements ProviderInterface
         );
     }
 
-    protected function mapEntityToDto(Question $question): QuestionDto {
-        return new QuestionDto(
+    protected function mapEntityToDto(Question $question): QuestionOutput {
+        return new QuestionOutput(
             $question->getId(),
             $question->getQuestion(),
             array_map(
-                fn($q) => new AnswerDto($q->getUuid(), $q->getAnswer()),
+                fn($q) => new AnswerOutput($q->getUuid(), $q->getAnswer()),
                 $this->shuffleAnswers($question)
             )
         );

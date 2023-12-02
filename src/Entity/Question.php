@@ -3,17 +3,16 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\GetCollection;
-use App\ApiResource\QuestionDto;
+use App\Dto\QuestionOutput;
 use App\Repository\QuestionRepository;
 use App\State\QuestionProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 #[GetCollection(
-    output: QuestionDto::class,
+    output: QuestionOutput::class,
     provider: QuestionProvider::class
 )]
 class Question
