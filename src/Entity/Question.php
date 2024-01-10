@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use App\Dto\QuestionOutput;
 use App\Repository\QuestionRepository;
 use App\State\QuestionProvider;
@@ -15,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
     output: QuestionOutput::class,
     provider: QuestionProvider::class
 )]
+#[Query]
+#[QueryCollection]
 class Question
 {
     #[ORM\Id]
