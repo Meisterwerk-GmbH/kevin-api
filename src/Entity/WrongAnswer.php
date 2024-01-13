@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping\Entity;
 #[Entity]
 class WrongAnswer extends Answer
 {
-    #[ORM\ManyToOne(inversedBy: 'answers')]
+    #[ORM\ManyToOne(inversedBy: 'wrongAnswers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Question $question = null;
 
