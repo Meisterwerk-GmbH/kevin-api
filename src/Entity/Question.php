@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     provider: QuestionProvider::class
 )]
 #[Query(normalizationContext: ['groups' => ['query']])]
-#[QueryCollection(normalizationContext: ['groups' => ['query']], read: false)]
+#[QueryCollection(normalizationContext: ['groups' => ['query']])]
 class Question
 {
     #[ORM\Id]
@@ -33,6 +33,7 @@ class Question
     private ?string $question = null;
 
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, cascade: ['persist'], orphanRemoval: true)]
+    #[Groups(['query'])]
     private Collection $answers;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]

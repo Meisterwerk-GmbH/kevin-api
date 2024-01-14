@@ -8,7 +8,6 @@ use ApiPlatform\Metadata\GraphQl\Query;
 use App\Repository\AnswerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\InheritanceType;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -23,10 +22,10 @@ class Answer
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ApiProperty(identifier: true)]
     #[ORM\Column(type: 'uuid', unique: true)]
     private UuidInterface $uuid;
 
-    #[ApiProperty(identifier: true)]
     #[ORM\Column(length: 255)]
     private ?string $answer = null;
 
