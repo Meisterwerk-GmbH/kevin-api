@@ -14,7 +14,6 @@ use Ramsey\Uuid\UuidInterface;
 
 #[ApiResource]
 #[Entity(repositoryClass: AnswerRepository::class)]
-#[InheritanceType('JOINED')]
 #[Query]
 class Answer
 {
@@ -30,6 +29,10 @@ class Answer
     #[ApiProperty(identifier: true)]
     #[ORM\Column(length: 255)]
     private ?string $answer = null;
+
+    #[ORM\ManyToOne(inversedBy: 'answers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Question $question = null;
 
     public function __construct(string $answer, UuidInterface $uuid = null)
     {
@@ -57,5 +60,15 @@ class Answer
     public function getUuid(): UuidInterface
     {
         return $this->uuid;
+    }
+
+    public function getQuestion(): ?Question
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(?Question $question): void
+    {
+        $this->question = $question;
     }
 }

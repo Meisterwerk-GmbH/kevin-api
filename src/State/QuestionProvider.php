@@ -52,8 +52,8 @@ class QuestionProvider implements ProviderInterface
      * @return Answer[]
      */
     protected function shuffleAnswers(Question $question): array {
-        $randomPosition = rand(0, $question->getWrongAnswers()->count());
-        $shuffledAnswers = $question->getWrongAnswers()->toArray();
+        $randomPosition = rand(0, $question->getAnswers()->count());
+        $shuffledAnswers = $question->getAnswers()->toArray();
         array_splice( $shuffledAnswers, $randomPosition, 0, [$question->getRightAnswer()]);
         return $shuffledAnswers;
     }

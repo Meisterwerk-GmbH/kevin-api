@@ -32,15 +32,15 @@ class Question
     #[Groups(['query'])]
     private ?string $question = null;
 
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: WrongAnswer::class, cascade: ['persist'], orphanRemoval: true)]
-    private Collection $wrongAnswers;
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $answers;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Answer $rightAnswer = null;
 
     public function __construct()
     {
-        $this->wrongAnswers = new ArrayCollection();
+        $this->answers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -61,26 +61,26 @@ class Question
     }
 
     /**
-     * @return Collection<int, WrongAnswer>
+     * @return Collection<int, Answer>
      */
-    public function getWrongAnswers(): Collection
+    public function getAnswers(): Collection
     {
-        return $this->wrongAnswers;
+        return $this->answers;
     }
 
-    public function addWrongAnswer(WrongAnswer $answer): static
+    public function addAnswer(Answer $answer): static
     {
-        if (!$this->wrongAnswers->contains($answer)) {
-            $this->wrongAnswers->add($answer);
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
             $answer->setQuestion($this);
         }
 
         return $this;
     }
 
-    public function removeWrongAnswer(WrongAnswer $answer): static
+    public function removeAnswer(Answer $answer): static
     {
-        if ($this->wrongAnswers->removeElement($answer)) {
+        if ($this->answers->removeElement($answer)) {
             // set the owning side to null (unless already changed)
             if ($answer->getQuestion() === $this) {
                 $answer->setQuestion(null);
@@ -99,17 +99,5 @@ class Question
     {
         $this->rightAnswer = $rightAnswer;
         return $this;
-    }
-
-    #[Groups(['query'])]
-    /**
-     * @return Answer[]
-     */
-    public function getAnswers(): array
-    {
-        $randomPosition = rand(0, $this->getWrongAnswers()->count());
-        $shuffledAnswers = $this->getWrongAnswers()->toArray();
-        array_splice( $shuffledAnswers, $randomPosition, 0, [$this->getRightAnswer()]);
-        return $shuffledAnswers;
     }
 }

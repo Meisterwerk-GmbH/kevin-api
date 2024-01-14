@@ -6,7 +6,6 @@ use App\Consumer\File\QuestionDto;
 use App\Consumer\File\QuestionsWrapperDto;
 use App\Entity\Answer;
 use App\Entity\Question;
-use App\Entity\WrongAnswer;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -69,8 +68,23 @@ class UpdateQuestionsCommand extends Command
         $dbQuestion = new Question();
         $dbQuestion->setQuestion($question->getQuestion());
         $dbQuestion->setRightAnswer(new Answer($question->getRightAnswer()));
-        array_map(fn($a) => $dbQuestion->addWrongAnswer(new WrongAnswer($a)), $question->getWrongAnswers());
+        $shuffledAnswers = $this->shuffleAnswers(
+            array_map(fn($a) => new Answer($a), $question->getWrongAnswers()),
+            $dbQuestion->getRightAnswer()
+        );
+        array_map(fn($a) => $dbQuestion->addAnswer($a), $shuffledAnswers);
         $this->em->persist($dbQuestion);
         $this->em->flush();
+    }
+
+    /**
+     * @param Answer[] $wrongAnswers
+     * @return Answer[]
+     */
+    protected function shuffleAnswers(array $wrongAnswers, Answer $rightAnswer): array {
+        $randomPosition = rand(0, count($wrongAnswers));
+        $shuffledAnswers = $wrongAnswers;
+        array_splice( $shuffledAnswers, $randomPosition, 0, [$rightAnswer]);
+        return $shuffledAnswers;
     }
 }
