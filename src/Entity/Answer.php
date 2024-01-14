@@ -7,8 +7,6 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AnswerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 #[ApiResource(
     operations: [],
@@ -19,13 +17,8 @@ class Answer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ApiProperty(identifier: false)]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ApiProperty(identifier: true)]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    private UuidInterface $uuid;
 
     #[ORM\Column(length: 255)]
     private ?string $answer = null;
@@ -34,10 +27,9 @@ class Answer
     #[ORM\JoinColumn(nullable: false)]
     private ?Question $question = null;
 
-    public function __construct(string $answer, UuidInterface $uuid = null)
+    public function __construct(string $answer)
     {
         $this->answer = $answer;
-        $this->uuid = $uuid ?: Uuid::uuid4();
     }
 
     public function getId(): ?int
@@ -55,11 +47,6 @@ class Answer
         $this->answer = $answer;
 
         return $this;
-    }
-
-    public function getUuid(): UuidInterface
-    {
-        return $this->uuid;
     }
 
     public function getQuestion(): ?Question
