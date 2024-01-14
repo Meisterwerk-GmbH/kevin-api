@@ -29,7 +29,6 @@ class QuestionProvider implements ProviderInterface
         $entities = $this->collectionProvider->provide($operation, $uriVariables, $context);
         assert($entities instanceof Paginator);
         $dtos = array_map(fn($q) => $this->mapEntityToDto($q), iterator_to_array($entities));
-        dump($dtos);
         return new TraversablePaginator(
             new \ArrayIterator($dtos),
             $entities->getCurrentPage(),

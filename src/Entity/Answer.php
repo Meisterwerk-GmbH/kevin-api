@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GraphQl\Query;
 use App\Repository\AnswerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
@@ -10,8 +12,10 @@ use Doctrine\ORM\Mapping\InheritanceType;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
+#[ApiResource]
 #[Entity(repositoryClass: AnswerRepository::class)]
 #[InheritanceType('JOINED')]
+#[Query]
 class Answer
 {
     #[ORM\Id]

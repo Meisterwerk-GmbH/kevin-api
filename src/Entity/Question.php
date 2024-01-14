@@ -11,22 +11,25 @@ use App\State\QuestionProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 #[GetCollection(
     output: QuestionOutput::class,
     provider: QuestionProvider::class
 )]
-#[Query]
-#[QueryCollection]
+#[Query(normalizationContext: ['groups' => ['query']])]
+#[QueryCollection(normalizationContext: ['groups' => ['query']], read: false)]
 class Question
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['query'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['query'])]
     private ?string $question = null;
 
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: WrongAnswer::class, cascade: ['persist'], orphanRemoval: true)]
@@ -96,5 +99,17 @@ class Question
     {
         $this->rightAnswer = $rightAnswer;
         return $this;
+    }
+
+    #[Groups(['query'])]
+    /**
+     * @return Answer[]
+     */
+    public function getAnswers(): array
+    {
+        $randomPosition = rand(0, $this->getWrongAnswers()->count());
+        $shuffledAnswers = $this->getWrongAnswers()->toArray();
+        array_splice( $shuffledAnswers, $randomPosition, 0, [$this->getRightAnswer()]);
+        return $shuffledAnswers;
     }
 }
