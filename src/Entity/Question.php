@@ -2,24 +2,22 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
-use App\Dto\QuestionOutput;
 use App\Repository\QuestionRepository;
-use App\State\QuestionProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: QuestionRepository::class)]
-#[GetCollection(
-    output: QuestionOutput::class,
-    provider: QuestionProvider::class
+#[ApiResource(
+    operations: [],
+    normalizationContext: ['groups' => ['query']],
+    graphQlOperations: [
+        new QueryCollection()
+    ]
 )]
-#[Query(normalizationContext: ['groups' => ['query']])]
-#[QueryCollection(normalizationContext: ['groups' => ['query']])]
+#[ORM\Entity(repositoryClass: QuestionRepository::class)]
 class Question
 {
     #[ORM\Id]

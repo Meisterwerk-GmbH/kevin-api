@@ -2,19 +2,19 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GraphQl\Mutation;
-use ApiPlatform\Metadata\GraphQl\Query;
-use ApiPlatform\Metadata\GraphQl\QueryCollection;
-use ApiPlatform\Metadata\Post;
 use App\Repository\GuessRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(
+    operations: [],
+    graphQlOperations: [
+        new Mutation(name: 'create')
+    ]
+)]
 #[ORM\Entity(repositoryClass: GuessRepository::class)]
 #[ORM\UniqueConstraint(columns: ['guesser', 'question_id'])]
-#[Post]
-#[Query]
-#[QueryCollection]
-#[Mutation(name: 'create')]
 class Guess
 {
     #[ORM\Id]
