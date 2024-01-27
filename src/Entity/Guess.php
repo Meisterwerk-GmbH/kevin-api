@@ -25,7 +25,7 @@ class Guess
     #[ORM\Column(length: 255)]
     private ?string $guesser = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'guesses')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Question $question = null;
 

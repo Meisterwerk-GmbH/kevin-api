@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use App\Filter\GuesserFilter;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,6 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new QueryCollection()
     ]
 )]
+#[ApiFilter(GuesserFilter::class)]
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 class Question
 {
@@ -36,6 +39,9 @@ class Question
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Answer $rightAnswer = null;
+
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Guess::class)]
+    private Collection $guesses;
 
     public function __construct()
     {
@@ -98,5 +104,10 @@ class Question
     {
         $this->rightAnswer = $rightAnswer;
         return $this;
+    }
+
+    public function getGuesses(): Collection
+    {
+        return $this->guesses;
     }
 }
