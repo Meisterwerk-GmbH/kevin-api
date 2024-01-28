@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use App\Filter\GuesserFilter;
 use App\Repository\QuestionRepository;
@@ -16,7 +17,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [],
     normalizationContext: ['groups' => ['query']],
     graphQlOperations: [
-        new QueryCollection()
+        new QueryCollection(),
+        new Query()
     ]
 )]
 #[ApiFilter(GuesserFilter::class)]
