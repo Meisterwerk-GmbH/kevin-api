@@ -1,0 +1,44 @@
+{
+  "questions": [
+    {
+      "question": "Was ist die Hauptstadt von Frankreich?",
+      "wrongAnswers": ["Berlin", "Rom"],
+      "rightAnswer": "Paris"
+    },
+    {
+      "question": "Wer hat die Mona Lisa gemalt?",
+      "wrongAnswers": ["Vincent van Gogh", "Pablo Picasso"],
+      "rightAnswer": "Leonardo da Vinci"
+    },
+    {
+      "question": "Wie viele Kontinente gibt es auf der Erde?",
+      "wrongAnswers": ["5", "8"],
+      "rightAnswer": "7"
+    },
+    {
+      "question": "In welchem Jahr begann der Zweite Weltkrieg?",
+      "wrongAnswers": ["1914", "1950"],
+      "rightAnswer": "1939"
+    },
+    {
+      "question": "Wer schrieb 'Faust'?",
+      "wrongAnswers": ["Friedrich Schiller", "Heinrich Heine"],
+      "rightAnswer": "Johann Wolfgang von Goethe"
+    },
+    {
+      "question": "Wie viele Elemente sind im Periodensystem (Stand 2023)?",
+      "wrongAnswers": ["102", "118"],
+      "rightAnswer": "118"
+    },
+    {
+      "question": "Was ist die chemische Formel für Wasser?",
+      "wrongAnswers": ["CO2", "H2O2"],
+      "rightAnswer": "H2O"
+    },
+    {
+      "question": "Wer ist der Autor von '1984'?",
+      "wrongAnswers": ["Aldous Huxley", "Ray Bradbury"],
+      "rightAnswer": "George Orwell"
+    }
+  ]
+}
