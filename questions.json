@@ -27,7 +27,7 @@
     },
     {
       "question": "Wie viele Elemente sind im Periodensystem (Stand 2023)?",
-      "wrongAnswers": ["102", "118"],
+      "wrongAnswers": ["102", "148"],
       "rightAnswer": "118"
     },
     {
